@@ -1,31 +1,13 @@
-import json
+import requests
 
 
 def dish_fetch(id):
 
-    datos_json = """
-    [
-        {
-            "id": 1,
-            "name": "Bandeja Paisa",
-            "region": "Antioquia"
-        },
+    response = requests.get(
+        "https://api-colombia.com/api/v1/TypicalDish"
+    )
 
-        {
-            "id": 5,
-            "name": "Ajiaco",
-            "region": "Bogotá"
-        },
-
-        {
-            "id": 15,
-            "name": "Lechona",
-            "region": "Tolima"
-        }
-    ]
-    """
-
-    platos = json.loads(datos_json)
+    platos = response.json()
 
     for plato in platos:
 
@@ -36,11 +18,17 @@ def dish_fetch(id):
 
 def mostrar_menu():
 
+    response = requests.get(
+        "https://api-colombia.com/api/v1/TypicalDish"
+    )
+
+    platos = response.json()
+
     print("\n===== PLATOS TÍPICOS COLOMBIANOS =====\n")
 
-    print("1 - Bandeja Paisa")
-    print("5 - Ajiaco")
-    print("15 - Lechona")
+    for plato in platos[:10]:
+
+        print(plato["id"], "-", plato["name"])
 
     opcion = int(input("\nSeleccione un plato: "))
 
@@ -51,7 +39,8 @@ def mostrar_menu():
         print("\n" + "*" * 20)
 
         print("Nombre:", plato["name"])
-        print("Región:", plato["region"])
+
+        print("Descripción:", plato["description"])
 
     else:
 
